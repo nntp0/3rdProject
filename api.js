@@ -36,6 +36,7 @@ req.on('error', function(err){
     console.log('오류 발생' + err.message)
 });
 
+const bodyParse = require('body-parser');
 
 // 여기까진 했는데 이거를 어케 가져오지..?
 
