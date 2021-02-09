@@ -2,12 +2,14 @@ const https = require('https');
 
 var options = {
     host: 'api.exchangeratesapi.io',
-    path: '/latest'
+    path: '/latest',
+    query: {
+        base: "USD"
+    }
 }
 
-var resData = ''
 var req = https.get(options, function(res){
-    
+    resData=""
     res.on('data',function(chunk){
         resData +=chunk;
     });
