@@ -2,6 +2,7 @@ var express = require('express');
 var cors = require('cors');
 var Graphql = require('graphql');
 var graphqlHTTP = require('express-graphql');
+var bodyParser = require('body-parser');
 
 const https = require('https');
 
@@ -14,7 +15,7 @@ var options = {
     host: 'api.exchangeratesapi.io',
     path: '/latest',
     query: {
-        base: 'EUR',
+        base: {type: Graphql.GraphQLString},
     }
 }
 
@@ -26,24 +27,22 @@ var req = https.get(options, function(res){
     });
 
     res.on('end',function(){
-        console.log(resData)
+       // console.log(resData)
     });
 });
 
-
+console.log(resData)
 
 req.on('error', function(err){
     console.log('오류 발생' + err.message)
 });
-
-const bodyParse = require('body-parser');
 
 // 여기까진 했는데 이거를 어케 가져오지..?
 
 const ratesType = new Graphql.GraphQLObjectType({
     name: "rate",
     fields: {
-        id:{ type: Graphql.GraphQLList}
+        id:{ type: Graphql.GraphQLString}
     }
 })
 
@@ -52,7 +51,7 @@ const currencyType = new Graphql.GraphQLObjectType({
     fields: {
         rates: { type: ratesType},
         base: { type: Graphql.GraphQLString},
-        date: { type: Graphql.GraphQLString},
+        date: { type: Date},
     }
 });
 
