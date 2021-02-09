@@ -3,9 +3,7 @@ const https = require('https');
 var options = {
     host: 'api.exchangeratesapi.io',
     path: '/latest',
-    query: {
-        base: "USD"
-    }
+    query : 'base=USD'
 }
 
 var req = https.get(options, function(res){
