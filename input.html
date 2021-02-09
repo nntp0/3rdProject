@@ -13,18 +13,20 @@
                 </td>
                 <td>
                     <select id="country">
-                        <option>미국</option>
-                        <option>한국</option>
-                        <option>유럽</option>
-                        <option>일본</option>
+                        <option value="USD">미국</option>
+                        <option value="KRW">한국</option>
+                        <option value="EUR">유럽</option>
+                        <option value="JPY">일본</option>
                     </select>
                 </td>
             </tr>
-        </table>	
+        </table>
+        <div id="currency"> </div>	
     </form>
     <script>
-        var selection = document.getElementById('country');
-        console.log(selection);
+        var selection = document.getElementsByTagName(option);
+        var div = document.getElementById('currency');
+        div.innerText = selection;
     </script>
 </body>
 </html>
