@@ -1,4 +1,4 @@
-const userDatabase =
+
 [
   {
     "id": 0,
@@ -37,5 +37,3 @@ const userDatabase =
     "year": "2014"
   }
 ]
-
-module.exports = userDatabase;
