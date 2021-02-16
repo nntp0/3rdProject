@@ -13,7 +13,7 @@ var root = {
     return 'Hello world!';
   },
 };
- 
+// 가나다라마바사
 // Run the GraphQL query '{ hello }' and print out the response
 graphql(schema, '{ hello }', root).then((response) => {
   console.log(response);
