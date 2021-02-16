@@ -18,6 +18,8 @@
     "express-graphql": "^0.12.0",
     "graphql": "^15.5.0",
     "jsdom": "^16.4.0",
+    "react": "^17.0.1",
+    "react-native": "^0.63.4",
     "request": "^2.88.2"
   }
 }
