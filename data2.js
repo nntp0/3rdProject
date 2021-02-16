@@ -1,6 +1,16 @@
-const rateCountry = [
-    "CAD","HKD","ISK","PHP","DKK","HUF","CZK","AUD","RON","SEK","IDR","INR","BRL","RUB","HRK","JPY","THB","CHF","SGD","PLN","BGN","TRY"
-    ,"CNY","NOK","NZD","ZAR","USD","MXN","ILS","GBP","KRW","MYR","EUR"
-]
+var http = require('http');
+var fs = require('fs');
+const address = 'http://59.28.30.218:20001/webhdfs/v1/user/hadoop?op=LISTSTATUS';
 
-module.exports = rateCountry;
+http.get(address,function(res){
+   var resData = '';
+    res.on('data',function(chunk){
+        resData +=chunk;
+    });
+
+    res.on('end',function(){
+        const jData = JSON.stringify(resData); 
+        fs.writeFileSync("hadoopData.json", jData)
+        console.log(resData);
+    });
+});
