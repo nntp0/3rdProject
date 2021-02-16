@@ -1,12 +1,12 @@
 const https = require('https');
-const queryString = require('querystring');
+const express = require('express');
+var app = express();
 var options = {
     host: 'api.exchangeratesapi.io',
-    path: '/latest',
-    query: 'base=USD'
+    path: '/latest?base=USD'
 }
 
-var req = https.get(options, stream => {
+var request = https.get(options, stream => {
     let rawdata = '';
     stream.setEncoding('utf8');
     stream.on('data', buffer => rawdata += buffer);
@@ -15,4 +15,10 @@ var req = https.get(options, stream => {
     });
 });
 
-console.log(req)
+function getData(req, res){
+  req = request;
+  console.log(req);
+}
+
+app.use(getData);
+app.listen(4000);
