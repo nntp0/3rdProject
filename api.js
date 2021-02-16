@@ -19,23 +19,23 @@ var options = {
     }
 }
 
-var resData = ''
-var req = https.get(options, function(res){
-    
-    res.on('data',function(chunk){
-        resData +=chunk;
+    var resData = ''
+    var req = https.get(options, function(res){
+        
+        res.on('data',function(chunk){
+            resData +=chunk;
+        });
+
+        res.on('end',function(){
+        // console.log(resData)
+        });
     });
 
-    res.on('end',function(){
-       // console.log(resData)
+    console.log(resData)
+
+    req.on('error', function(err){
+        console.log('오류 발생' + err.message)
     });
-});
-
-console.log(resData)
-
-req.on('error', function(err){
-    console.log('오류 발생' + err.message)
-});
 
 // 여기까진 했는데 이거를 어케 가져오지..?
 
@@ -87,7 +87,6 @@ var schema = new Graphql.GraphQLSchema({ query: queryType});
 var app = express();
 
 app.use(cors());
-
 app.use(
     "/graphql", //라우트 경로 지정
     graphqlHTTP.graphqlHTTP({

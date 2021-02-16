@@ -1,6 +1,16 @@
-const rateCountry = [
-    "CAD","HKD","ISK","PHP","DKK","HUF","CZK","AUD","RON","SEK","IDR","INR","BRL","RUB","HRK","JPY","THB","CHF","SGD","PLN","BGN","TRY"
-    ,"CNY","NOK","NZD","ZAR","USD","MXN","ILS","GBP","KRW","MYR","EUR"
-]
+var https = require('https');
+var fs = require('fs');
+const address = 'https://api.exchangeratesapi.io/latest?base=KRW';
 
-module.exports = rateCountry;
+https.get(address,function(res){
+   var currentData = '';
+    res.on('data',function(chunk){
+        currentData +=chunk;
+    });
+
+    res.on('end',function(){
+        const jData = JSON.stringify(currentData); 
+        fs.writeFileSync("currentData.json", jData)
+        module.exports = currentData;
+    });
+});
