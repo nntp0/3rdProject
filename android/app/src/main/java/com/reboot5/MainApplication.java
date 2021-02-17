@@ -1,6 +1,5 @@
 package com.reboot5;
 
-import com.fetchsky.RNTextDetector.RNTextDetectorPackage;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
