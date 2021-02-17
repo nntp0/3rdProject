@@ -1,27 +1,30 @@
 import React, { useState, useRef, Component } from 'react'
-import { StyleSheet, FlatList, Button, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, FlatList, View, Text, TouchableOpacity } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-const Stack = createStackNavigator();
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+
+const Tab = createMaterialBottomTabNavigator();
 const MyStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <Tab.Navigator>
+        <Tab.Screen
           name="MainPage"
           component={MainPage}
           options={{ title: 'MainPage' }}
         />
-        <Stack.Screen name="BagList" component={BagList} />
-      </Stack.Navigator>
+        <Tab.Screen name="BagList" component={BagList} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };
-
 
 const MainPage = ({ navigation }) => {
   const [isDetected, setIsDetected] = useState(false);
@@ -32,8 +35,11 @@ const MainPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Text></Text>
+      </View>
       <RNCamera
-        style={{ width:300, height:500, alignItems: 'center' }}
+        style={{width:"100%", height:100}}
         ref={cameraRef}
         onTextRecognized={({textBlocks})=>{
           if (timer > 0) {
@@ -62,18 +68,12 @@ const MainPage = ({ navigation }) => {
         borderWidth:3,
         borderStyle: 'dashed',
         left:location.origin.x,
-        top:location.origin.y-50,
-        width:location.size.width,
-        height:location.size.height,
+        top:location.origin.y,
+        width:100,
+        height:100,
         backgroundColor: 'white',
         }}><Text>{price}</Text></View>}
       </RNCamera>
-      <Button
-        title="장바구니"
-        onPress={ () =>
-          navigation.navigate('BagList', { priceList: 500 })
-        }
-      />
 
     </View>
   )
@@ -88,8 +88,7 @@ const BagList = ({ navigation, route }) => {
     <View>
       <FlatList
         data={temp}
-        renderItem={({item}) =>
-        
+        renderItem={({item}) =>        
           <View style={{
             flex:1,
             flexDirection: 'row',
