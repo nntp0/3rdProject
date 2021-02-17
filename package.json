@@ -10,6 +10,7 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "convert-csv-to-json": "^1.3.0",
     "cors": "^2.8.5",
@@ -20,6 +21,7 @@
     "graphql": "^15.5.0",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
+    "path": "^0.12.7",
     "react": "^17.0.1",
     "react-native": "^0.63.4",
     "request": "^2.88.2"

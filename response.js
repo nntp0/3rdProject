@@ -5,7 +5,7 @@ var app = express();
 
 app.get('/', function(req,res){
     req.body = JSON.parse(hadoopData);
-    res.send(req.body);
+    console.log(req.body)
 })
 
 app.listen(5500);
