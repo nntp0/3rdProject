@@ -233,5 +233,5 @@ const MainPage = ({ navigation, route }) => {
 }
 
 
-import { getStyles } from './styleSheet'
+import { getStyles } from './cssFiles/styleSheet'
 const styles = getStyles()

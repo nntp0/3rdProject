@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView , View ,Text } from 'react-native';
 
 // 직접 만든 버튼 컴포넌트를 외부에서 가져오기
 import CustomButton from '../components/CustomButton';
-import { getStyles } from '../styleSheet';
+import { getStyles } from '../cssFiles/styleSheet';
 
 function sum(priceList) {
   var total = 0;
