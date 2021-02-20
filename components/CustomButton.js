@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import { baseProps } from 'react-native-gesture-handler/dist/src/handlers/gestureHandlers';
 
 
 function CustomButton(props) {
