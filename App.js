@@ -1,5 +1,5 @@
-import React, { useState, useRef, Component, useEffect } from 'react'
-import { StyleSheet, FlatList, View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 
 import 'react-native-gesture-handler';
@@ -32,7 +32,6 @@ const MyStack = () => {
           name="MainPage"
           component={MainPage}
           options={{ title: 'MainPage' }}
-          test="Iam"
         />
         <Tab.Screen name="BagList" component={BagList} />
       </Tab.Navigator>
@@ -178,20 +177,20 @@ const MainPage = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 0.4 }}>
-        <Text>title</Text>
+      <View style={styles.titlePanel}>
+        <Text>Title</Text>
       </View>
-      <View style={{ flex: 0.6, width: "90%" }}>
+      <View style={styles.cameraPanel}>
         <RNCamera
-          style={{ width: "100%", height: 100 }}
+          style={styles.camera}
           ref={cameraRef}
           onTextRecognized={({ textBlocks }) => {
             if (timer > 0) {
               setTimer(timer - 1);
             }
             else {
-              setPrice('')
               if (textBlocks.length == 0) {
+                setPrice('')
                 setIsDetected(false)
               } else {
                 textBlocks.forEach(element => {
@@ -210,8 +209,9 @@ const MainPage = ({ navigation, route }) => {
         >
         </RNCamera>
       </View>
-      <View style={styles.price}>
-        <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={
+      <View style={styles.pricePanel}>
+        <TouchableOpacity activeOpacity={0.2} style={{flex:1,  color:"blue", alignItems: 'center',
+            justifyContent: 'center',}} onPress={
           () => {
             global.listLength += 1
             global.id += 1
@@ -223,30 +223,16 @@ const MainPage = ({ navigation, route }) => {
             setIsDetected(false);
           }
         }>
-          <Text>{isDetected ? price : null}</Text>
+          <Text style={{fontSize:30}}>{isDetected ? price : null}</Text>
         </TouchableOpacity>
       </View>
-      {country !== null && <Text>나라 : {country}</Text>}
+      <View style={styles.infoPanel}>
+        {country !== null && <Text>나라 : {country}</Text>}
+      </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    justifyContent: 'space-around'
-  },
-  price: {
-    marginBottom: 100,
-    justifyContent: 'center',
-    borderWidth: 3,
-    borderStyle: 'dashed',
-    alignItems: 'center',
-    width: 100,
-    height: 50,
-    backgroundColor: 'red'
-  }
-})
+
+import { getStyles } from './styleSheet'
+const styles = getStyles()
