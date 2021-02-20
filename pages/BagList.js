@@ -1,29 +1,35 @@
 import { PROPERTY_TYPES } from '@babel/types';
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, FlatList, ScrollView , View ,Text, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView , View ,Text } from 'react-native';
 
 // 직접 만든 버튼 컴포넌트를 외부에서 가져오기
 import CustomButton from '../components/CustomButton';
+import { getStyles } from '../styleSheet';
+
+function sum(priceList) {
+  var total = 0;
+  priceList.forEach(element => {
+    total += parseInt(element.price);
+  });
+  return total
+}
 
 function BagList( {navigation, route} ) {
     const [listLength, setListLength] = useState(global.listLength);
-    const [itemList, setItemList] = useState(global.priceList);
+    const [itemList, setItemList] = useState(global.priceList.length);
 
     useEffect(() => {
       const unsubscribe = navigation.addListener('tabPress', e => {
 
         console.log('BagList')
         setItemList(global.priceList)
-        setListLength(global.listLength)
+        setListLength(global.priceList.length)
 
       }, [navigation]);
   
       return unsubscribe;
     })
 
-    const delList = (index) => {
-      console.log('123')
-    }
 
 
     return (
@@ -31,18 +37,22 @@ function BagList( {navigation, route} ) {
 
             <View style={styles.priceTotalContainers}>
                 <Text style={styles.priceTotalText}>
-                총 금액 표시
+                  {sum(itemList)}
                 </Text>
             </View>            
 
             <ScrollView style={styles.priceListContainers}>
-              { listLength==0 ? null : itemList.map(list => {
+              { listLength==0 ? null : itemList.map((row, index) => {
                 return (
-                  <View style={styles.priceListContents} key={list.id}>
-                  <Text style={styles.priceListText}>
-                      {list.price}
-                  </Text>
-                  <CustomButton name='삭제' onPress={()=>{console.log('clicked')}}></CustomButton>
+                  <View style={styles.priceListContents} key={index}>
+                    <Text style={styles.priceListText}>
+                        {row.price}
+                    </Text>
+                    <CustomButton name='삭제' onPress={() => {                      
+                      global.priceList = global.priceList.slice(0, index).concat(global.priceList.slice(index+1, global.priceList.length))
+                      setItemList(global.priceList)
+                      setListLength(global.priceList.length)
+                    }}></CustomButton>
                   </View>
                   )}) 
               }
@@ -50,6 +60,11 @@ function BagList( {navigation, route} ) {
         </View>
     )
 }
+function delList(text) {
+  console.log(text)
+}
+
+
 
 
 

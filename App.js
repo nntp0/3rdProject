@@ -5,9 +5,9 @@ import { RNCamera } from 'react-native-camera'
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import NetInfo from "@react-native-community/netinfo";
 import { getGeoLocation } from './getGeoLocation'
 import { code } from './countryCode';
@@ -17,8 +17,6 @@ import BagList from './pages/BagList';
 
 const Tab = createMaterialBottomTabNavigator();
 global.priceList = []
-global.listLength = 0
-global.id = 0
 
 const MyStack = () => {
   return (
@@ -213,11 +211,8 @@ const MainPage = ({ navigation, route }) => {
         <TouchableOpacity activeOpacity={0.2} style={{flex:1,  color:"blue", alignItems: 'center',
             justifyContent: 'center',}} onPress={
           () => {
-            global.listLength += 1
-            global.id += 1
-            global.priceList.push({ id: global.id, price: price })
+            global.priceList.push({price:price})
             console.log(global.priceList)
-            console.log(global.listLength)
             setTimer(2);
             setPrice('');
             setIsDetected(false);
