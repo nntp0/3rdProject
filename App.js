@@ -14,6 +14,8 @@ import { code } from './countryCode';
 
 // page별 코드 정보를 외부에서 가져오기
 import BagList from './pages/BagList';
+import UserSetting from './pages/UserSetting';
+import Calculator from './pages/Calculator';
 
 const Tab = createMaterialBottomTabNavigator();
 global.priceList = []
@@ -32,6 +34,8 @@ const MyStack = () => {
           options={{ title: 'MainPage' }}
         />
         <Tab.Screen name="BagList" component={BagList} />
+        <Tab.Screen name="UserSetting" component={UserSetting} />
+        <Tab.Screen name="Calculator" component={Calculator}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
