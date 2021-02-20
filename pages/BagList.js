@@ -1,4 +1,3 @@
-import { PROPERTY_TYPES } from '@babel/types';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView , View ,Text } from 'react-native';
 
@@ -14,35 +13,31 @@ function sum(priceList) {
   return total
 }
 
-function BagList( {navigation, route} ) {
-    const [listLength, setListLength] = useState(global.listLength);
-    const [itemList, setItemList] = useState(global.priceList.length);
+function BagList( {navigation} ) {
+    const [itemList, setItemList] = useState(global.priceList);
+    const [toggle, setToggle] = useState(true);
 
     useEffect(() => {
       const unsubscribe = navigation.addListener('tabPress', e => {
-
         console.log('BagList')
         setItemList(global.priceList)
-        setListLength(global.priceList.length)
-
+        toggle ? setToggle(false) : setToggle(true)
       }, [navigation]);
   
       return unsubscribe;
     })
 
-
-
     return (
         <View style={styles.allContainers}>
 
             <View style={styles.priceTotalContainers}>
-                <Text style={styles.priceTotalText}>
-                  {sum(itemList)}
-                </Text>
+              <Text style={styles.priceTotalText}>
+                {sum(itemList)}
+              </Text>
             </View>            
 
             <ScrollView style={styles.priceListContainers}>
-              { listLength==0 ? null : itemList.map((row, index) => {
+              { itemList.length==0 ? null : itemList.map((row, index) => {
                 return (
                   <View style={styles.priceListContents} key={index}>
                     <Text style={styles.priceListText}>
@@ -51,7 +46,6 @@ function BagList( {navigation, route} ) {
                     <CustomButton name='삭제' onPress={() => {                      
                       global.priceList = global.priceList.slice(0, index).concat(global.priceList.slice(index+1, global.priceList.length))
                       setItemList(global.priceList)
-                      setListLength(global.priceList.length)
                     }}></CustomButton>
                   </View>
                   )}) 
@@ -60,39 +54,6 @@ function BagList( {navigation, route} ) {
         </View>
     )
 }
-function delList(text) {
-  console.log(text)
-}
-
-
-
-
-
-/*useEffect(() => {
-      const unsubscribe = navigation.addListener('tabPress', e => {
-        navigation.navigate('MainPage')
-        console.log('MainPage')
-      });
-    }, [navigation])*/
-/*{ isNone ? null : itemList.map(list => {
-  return (
-      <View style={styles.priceListContents} key={list.id}>
-      <Text style={styles.priceListText}>
-          {list.price}
-      </Text>
-      <CustomButton name='삭제'></CustomButton>
-      </View>
-      )}) 
-  }*/
-  /*<View style={styles.priceListContents}>
-  <Text style={styles.priceListText}>
-      안녕하세요
-  </Text>
-  <CustomButton name='삭제'></CustomButton>
-</View>*/
-
-
-
 
 const styles = StyleSheet.create ( {
 
