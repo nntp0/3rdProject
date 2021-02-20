@@ -20,8 +20,8 @@ export const requestLocationPermission = async () => {
                 },
             );
             if (granted == PermissionsAndroid.RESULTS.GRANTED) {
-                alert('허가')
-                console.log('위치정보 사용을 허가');
+                //alert('허가')
+                //console.log('위치정보 사용을 허가');
                 return true;
             } else {
                 alert('거부')

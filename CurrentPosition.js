@@ -8,7 +8,7 @@ export const CurrentPosition = () => {
       if (resPermission) {
         Geolocation.getCurrentPosition(
           (position) => {
-            console.log('getCurrentPosition success');
+            //console.log('getCurrentPosition success');
             const {latitude, longitude} = position.coords;
             resolve({code: 0, lat: latitude, lon: longitude});
           },

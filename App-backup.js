@@ -4,7 +4,9 @@ import { RNCamera } from 'react-native-camera'
 
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
+import { Button } from 'react-native-elements';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,6 +16,7 @@ import { code } from './countryCode';
 
 // page별 코드 정보를 외부에서 가져오기
 import BagList from './pages/BagList';
+import { Alert } from 'react-native';
 
 const Tab = createMaterialBottomTabNavigator();
 global.priceList = []
@@ -39,142 +42,137 @@ const MyStack = () => {
     </NavigationContainer>
   );
 };
+
 export default MyStack;
 
 const MainPage = ({ navigation, route }) => {
-  const [isDetected, setIsDetected] = useState(false);  //카메라에서 숫자가 인식됨?
-  const [location, setLocation] = useState(null);       //인식된 숫자의 좌표
-  const [price, setPrice] = useState("");               //인식된 숫자
-  const [timer, setTimer] = useState(0);                //인식되고 딜레이 설정
+  const [isDetected, setIsDetected] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [price, setPrice] = useState("");
+  const [timer, setTimer] = useState(0);
   const cameraRef = useRef();
 
-  const [recentCurrencyList, setRecentCurrencyList] = useState(null);
+  const [recent, setRecent] = useState(null);
   const [country, setCountry] = useState(null);
 
-  // 초기 설정을 진행합니다.
-  // 인터넷 가능 확인
-  //  1. 가능
-  //    1) 최신 환율 정보 수신 (내부서버)
-  //      [1] 환율 정보 내부저장소에 저장
-  //    2) 위도/경도 수신 (외부서버)
-  //      [1] 위도/경도를 바탕으로 현재 위치 수신 (외부서버)
-  //      [2] 위치 정보 내부저장소에 저장
-  //  2. 불가능
-  //    1) 내부저장소에서 환율 정보 가져옴
-  //    2) 내부저장소에서 위치 정보 가져옴
-  useEffect(() => {
-    // 인터넷 연결확인
-    networkCheck().then((resNetwork) => {
-      //console.log('resNetwork > ', resNetwork)
-      if (resNetwork) {
-        console.log('1')
-        getRecentCurrencyList() // 현재 최신 환율 정보 서버에서 가져오기
-        getGeoLocation().then((resGeo) => { // 위도/경도 받아오기
-          console.log('1.2 Success')
-          getCurrentCountry(resGeo) // 현재 위도/경도 의 나라 가져오기
-        }).catch((err) => {
-          console.log('1.2 Fail: ', err)
-        })
-      } else {
-        // 인터넷 연결 안됐을때 async storage에서 가져오기
-        console.log('2')
-        getAsyncStorage()
-      }
-    })
-  }, [navigation])
+  const [geoLocation, setGeoLocation] = useState(null)
+  //console.log('country_code > ',code.kr)
 
   const networkCheck = () => {
     return new Promise((resolve, reject) => {
       NetInfo.fetch().then(state => {
-        //console.log("Connection type fetch", state.type);
-        //console.log("Is connected? fetch", state.isConnected);
+        console.log("Connection type fetch", state.type);
+        console.log("Is connected? fetch", state.isConnected);
         if (state.isConnected) {
-          //console.log('연결')
+          console.log('연결')
           resolve(true)
         } else {
-          //console.log('실패')
+          console.log('실패')
           resolve(false)
         }
       }).catch((err) => {
         reject(err)
       });
     })
-  } // 현재 인터넷이 가능한지 확인합니다.
-  
-  // 인터넷이 가능한 경우
-  const getRecentCurrencyList = () => {
+  }
+
+  const recentApi = () => {
     const url = 'http://59.28.30.218:3000/recent'
     axios.get(url).then((resRecent) => {
-      console.log('1.1 Success')
       //console.log('resRecent > ', resRecent)
-      storeCurrencyList(resRecent.data)
-      setRecentCurrencyList(resRecent.data)
+      storeData(resRecent.data)
     })
-  } // 현재 CurrencyList를 얻어옵니다.
-  const getCurrentCountry = (resGeo) => {
+  }
+
+  const returnCountry = (resGeo) => {
     const geUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + resGeo.lat + '&lon=' + resGeo.lon + '&zoom=18&addressdetail=1';
     axios.get(geUrl).then((resCountry) => {
-      console.log('1.2.1 Success')
-      resCountry = resCountry.data.address.country_code //반환된 모든 정보에서 나라 정보만 추출
-      storeCountry(resCountry)
-      setCountry(resCountry)
+      storeCountry(resCountry).then(() => {
+        console.log('setCountry > ', resCountry)
+        console.log('setCountry.data > ', resCountry.data)
+        console.log('들어오니?')
+        setCountry(resCountry.data.address)
+      }).catch((err) => {
+        // 에러처리
+      })
     })
-  } // 현재 Country 정보를 얻어옵니다.
-  const storeCurrencyList = async (value) => {
-    //console.log('Store CurrencyList into Async Storage')
+
+  }
+
+  const getAsync = () => {
+    //alert('AsyncStorage 가져오기!')
+    getData().then((resGetData) => {
+      console.log('resGetData > ', resGetData)
+      setRecent(resGetData)
+    })
+    getCountry().then((resGetData) => {
+      console.log('resGetData > ', resGetData.data.address)
+      setCountry(resGetData.data.address)
+    })
+  }
+
+  //인터넷연결 확인해서 환율정보 갱신하는 거
+  useEffect(() => {
+    // 인터넷 연결확인
+    networkCheck().then((resNetwork) => {
+      console.log('resNetwork > ', resNetwork)
+      if (resNetwork) {
+        // 위도/경도 받아오기
+        getGeoLocation().then((resGeo) => {
+          console.log('resGeo >>> ', resGeo)
+          setGeoLocation(resGeo) // 페이지 하단 출력하기위해 state에 담기
+          recentApi() // express api 값 가져오기
+          returnCountry(resGeo) // 현재 위도/경도 의 나라 가져오기
+        }).catch((err) => {
+          Alert.alert('geo err', err)
+        })
+      } else {
+        // 인터넷 연결 안됐을때 async storage에서 가졍오기
+        getAsync()
+      }
+    })
+
+  }, [navigation])
+
+  const storeData = async (value) => {
+    console.log('storeData 입장')
     try {
       const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('CurrencyListKey', jsonValue)
-      console.log('1.1.1 Success')
+      await AsyncStorage.setItem('RKey', jsonValue)
     } catch (e) {
-      console.log('1.1.2 Fail: ', err)
+      // saving error
     }
-  } // Async 스토리지에 CurrencyList를 저장합니다
+  }
+  const getData = async () => {
+    console.log('getData 입장')
+    try {
+      const asyncValue = await AsyncStorage.getItem('RKey')
+      const RKeyJson = JSON.parse(asyncValue)
+      return RKeyJson
+    } catch (e) {
+      // error reading value
+    }
+  }
+
   const storeCountry = async (value) => {
-    //console.log('Store Country into Async Storage')
+    console.log('storeCountry')
     try {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('CountryKey', jsonValue)
-      console.log('1.2.2 Success')
     } catch (e) {
-      console.log('1.2.2 Fail: ', err)
+      // saving error
     }
-  } // Async 스토리지에 Country를 저장합니다
-  
-  // 인터넷이 불가능한 경우
-  const getAsyncStorage = () => {
-    //AsyncStorage에서 정보를 불러옵니다.
-    //CurrencyList, Country
-    getCurrenyList().then((resGetData) => {
-      setRecentCurrencyList(resGetData)
-    })
-    getCountry().then((resGetData) => {
-      setCountry(resGetData)
-    })
-  } // Async 스토리지에 CurrencyList, Country를 불러와 State(recentCurrencyList, country)에 저장합니다.
-  const getCurrenyList = async () => {
-    //console.log('Get CurrencyList from Async Storage')
-    try {
-      const asyncValue = await AsyncStorage.getItem('CurrencyListKey')
-      const RKeyJson = JSON.parse(asyncValue)
-      console.log('2.1 Success')
-      return RKeyJson
-    } catch (e) {
-      console.log('2.1 Fail: ', e)
-    }
-  } // Async 스토리지에 저장된 CurrencyList를 불러옵니다.
+  }
   const getCountry = async () => {
-    //console.log('Get Country from Async Storage')
+    console.log('getCountry')
     try {
       const asyncValue = await AsyncStorage.getItem('CountryKey')
       const RKeyJson = JSON.parse(asyncValue)
-      console.log('2.2 Success')
       return RKeyJson
     } catch (e) {
-      console.log('2.2 Fail: ', e)
+      // error reading value
     }
-  } // Async 스토리지에 저장된 Country를 불러옵니다.
-
+  }
 
   return (
     <View style={styles.container}>
@@ -226,7 +224,8 @@ const MainPage = ({ navigation, route }) => {
           <Text>{isDetected ? price : null}</Text>
         </TouchableOpacity>
       </View>
-      {country !== null && <Text>나라 : {country}</Text>}
+      {geoLocation !== null && <Text>위도: {geoLocation.lat} / 경도: {geoLocation.lon}</Text>}
+      {country !== null && <Text>나라 : {country.country_code}</Text>}
     </View>
   )
 }
