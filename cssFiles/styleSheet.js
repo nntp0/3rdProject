@@ -11,26 +11,29 @@ export const getStyles = () =>{ return StyleSheet.create({
             justifyContent: 'space-around'
         },
         titlePanel: {
-            flex:0.5,
+            flex: 1,
+            flexDirection: 'row',
             backgroundColor: "#625296",
             width: "100%",
             alignItems: 'center',
             justifyContent: 'center',
         },
-        titleText:{
+        titleButton:{
+            margin: 20,
+        },
+        titleButtonText: {
             color: "#EFA8B0",
             fontWeight: "bold",
-            fontSize: 20
+            fontSize: 20,
         },
         cameraText:{
-           margin: 20,
+            margin: 20,
             flexDirection : 'row',
-            flex:3
+            flex: 0.5,
         },
         cameraPanel: {
             flex: 5,
-            width: "60%",
-            
+            width: "80%",
             justifyContent: 'center',
         },
         buttonPanel: {

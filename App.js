@@ -262,7 +262,7 @@ const MainPage = ({ navigation, route }) => {
       <View style={styles.titlePanel}>
         <TouchableOpacity
           activeOpacity={0.2}
-          style={{flex:1, alignItems: 'flex-start', justifyContent: 'center',}} 
+          style={styles.titleButton} 
           onPress={() => {
               navigation.navigate('CurrencySettings', {
                 "fromCountry":fromCountry,
@@ -273,16 +273,16 @@ const MainPage = ({ navigation, route }) => {
               })
           }
         }>
-          <Text style={{fontSize:20}}>{fromCountry+'->'+toCountry}</Text>
+          <Text style={styles.titleButtonText}>{fromCountry+'->'+toCountry}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.2}
-          style={{flex:1, alignItems: 'flex-end', justifyContent: 'center',}} 
+          style={styles.titleButton}
           onPress={() => {
               navigation.navigate('MenuCamera')
           }
           }>
-          <Text style={{fontSize:20}}>MenuCamera click!</Text>
+          <Text style={styles.titleButtonText}>MenuCamera click!</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.cameraText}>카메라 화면에 가격표를 맞춰주세요</Text>
@@ -316,8 +316,7 @@ const MainPage = ({ navigation, route }) => {
         </RNCamera>
       </View>
       <View style={styles.pricePanel}>
-        <TouchableOpacity activeOpacity={0.2} style={{flex:1,  color:"blue", alignItems: 'center',
-            justifyContent: 'center',}} onPress={
+        <TouchableOpacity activeOpacity={0.2} style={styles.price} onPress={
           () => {
             global.priceList.push({price:price})
             console.log(global.priceList)
