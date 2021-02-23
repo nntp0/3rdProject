@@ -16,7 +16,7 @@ import { code } from './currencySign';
 import BagList from './pages/BagList';
 import UserSetting from './pages/UserSetting';
 import Calculator from './pages/Calculator';
-import MenuCamera from './pages/MenuCamera';
+
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
@@ -32,9 +32,11 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen 
+        name="How Much?" 
+        component={Home} 
+        />
         <Stack.Screen name="CurrencySettings" component={UserSetting} />
-        <Stack.Screen name="MenuCamera" component={MenuCamera} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -50,7 +52,7 @@ function Home(){
         <Tab.Screen
           name="MainPage"
           component={MainPage}
-          options={{ title: 'MainPage' }}
+          options={{ title: 'Shopping' }}
         />
         <Tab.Screen name="BagList" component={BagList} />
         <Tab.Screen name="Calculator" component={Calculator}/>
@@ -288,17 +290,9 @@ const MainPage = ({ navigation, route }) => {
               })
           }
         }>
-          <Text style={styles.titleButtonText}>{fromCountry+'->'+toCountry}</Text>
+          <Text style={styles.titleButtonText}>{fromCountry+'  ➔  '+toCountry}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.2}
-          style={styles.titleButton}
-          onPress={() => {
-              navigation.navigate('MenuCamera')
-          }
-          }>
-          <Text style={styles.titleButtonText}>MenuCamera click!</Text>
-        </TouchableOpacity>
+
       </View>
       <Text style={styles.cameraText}>카메라 화면에 가격표를 맞춰주세요</Text>
       <View style={styles.cameraPanel}>
@@ -330,25 +324,30 @@ const MainPage = ({ navigation, route }) => {
         >
         </RNCamera>
       </View>
-      <View style={styles.pricePanel}>
-        <TouchableOpacity activeOpacity={0.2} style={styles.price} onPress={
-          () => {
-            global.priceList.push({price:price})
-            console.log(global.priceList)
-            setTimer(2);
-            setPrice('');
-            setIsDetected(false);
-          }
-        }>
-          <Text style={{fontSize:30}}>{isDetected ? price : null}</Text>
-          
-          
-        </TouchableOpacity>
+
+      <View style={styles.buttonPanel}>
+        <View style={styles.infoPanel}>
+          <TouchableOpacity activeOpacity={0.2} onPress={
+            () => {
+              if (price!='') {
+              global.priceList.push({price:price})
+              console.log(global.priceList)
+              setTimer(2);
+              setPrice('');
+              setIsDetected(false);
+              }
+            }
+          }>
+            <Text>변환 전 : {isDetected ? price : 0}</Text>
+            
+            
+          </TouchableOpacity>
+        </View>
+        <View style={styles.infoPanel}>
+          <Text>변환 후 : {isDetected ? (price*currency).toFixed(2) : 0}</Text>
+        </View>
       </View>
-      <View style={styles.infoPanel}>
-        <Text>변환 후</Text>
-        <Text>{isDetected ? (price*currency).toFixed(2) : null}</Text>
-      </View>
+
     </View>
   )
 }

@@ -9,7 +9,7 @@ const inputButtons = [
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9],
-    [0, '.', '<']
+    [0, '.', 'del']
 ];
 const ReactCalculator = (props) => {
 
@@ -185,16 +185,13 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flex: 1,
-        backgroundColor: '#3E606F'
+        backgroundColor: '#f3cbd1'
     },
     inputRow: {
         flex: 1,
         flexDirection: 'row'
     },
-    inputContainer: {
-        flex: 8,
-        backgroundColor: '#3E606F'
-    },
+    
     displayContainer: {
         flex: 2,
         backgroundColor: '#193441',
