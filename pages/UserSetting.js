@@ -1,29 +1,58 @@
-import { PROPERTY_TYPES } from '@babel/types';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { SafeAreaView, StyleSheet, CheckIcon, FlatList, ScrollView , View ,Text, Button, TouchableOpacity, TextInput } from 'react-native';
 import CustomButton from '../components/CustomButton';
+import { code } from '../currencySign';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import _ from 'lodash';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 사용자 국가 설정 페이지
-function UserSetting( { navigation } ) {
-  
+function UserSetting( { navigation, route } ) {
+  var {
+    fromCountry,
+    toCountry,
+    setFromCountry,
+    setToCountry,
+    currencyFromToList,
+  } = route.params
+  const [isLeft, setIsLeft] = useState(true);
+  const [tmpFromCountry, setTmpFromCountry] = useState(fromCountry);
+  const [tmpToCountry, setTmpToCountry] = useState(toCountry);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      console.log('Setting')
+      console.log(global.fromCountry + '/' + global.toCountry)
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  var fromCountryList = Object.keys(currencyFromToList)
+
   return (
-    
     <View style={styles.allContainers}>
-
       <View style={styles.changeContainers}>
-
-        <Text style={styles.changeText}>
-          바꾸기 전
-        </Text>
-        <Icon style={styles.changeText}>⇆</Icon>
-        <Text style={styles.changeText}>
-          바꾼 후
-        </Text>
-
+        
+        <View style={{flexDirection: 'row',}}>
+          <TouchableOpacity style={styles.worldListContents} onPress={() => {
+            setIsLeft(true)
+            console.log('Left')
+          }}>
+            <Text style={styles.changeText}>
+              {tmpFromCountry}
+            </Text>
+          </TouchableOpacity>
+          <Icon style={styles.changeText}>⇆</Icon>
+          <TouchableOpacity style={styles.worldListContents} onPress={() => {
+            setIsLeft(false)
+            console.log('Right')
+          }}>
+            <Text style={styles.changeText}>
+              {tmpToCountry}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.searchContainer}>
@@ -36,23 +65,44 @@ function UserSetting( { navigation } ) {
       </View>
 
       <ScrollView style={styles.worldListContainers}>
-        
-        <TouchableOpacity style={styles.worldListContents}>
-          <View style={{flexDirection:'row'}}>
-            <Text style={styles.worldListText}>KRW</Text>
-            <Text style={styles.worldListText}>한국</Text>
-          </View>
-        </TouchableOpacity>
-
+        { isLeft ? (fromCountryList.length==0 ? null : fromCountryList.map((row, index) => {
+          return (
+            <View style={styles.priceListContents} key={index}>
+              <TouchableOpacity style={styles.worldListContents} onPress={() => {
+                setFromCountry(row)
+                setTmpFromCountry(row)
+                global.fromCountry=row
+                console.log(row)
+              }}>
+                <View style={{flexDirection:'row'}}>
+                  <Text style={styles.worldListText}>{row}</Text>
+                  <Text style={styles.worldListText}>{code[row]}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )
+        })) : (currencyFromToList[tmpFromCountry].length==0 ? null : currencyFromToList[tmpFromCountry].map((row, index) => {
+          return (
+            <View style={styles.priceListContents} key={index}>
+              <TouchableOpacity style={styles.worldListContents} onPress={() => {
+                setToCountry(row)
+                setTmpToCountry(row)
+                global.toCountry=row
+                console.log(row)
+              }}>
+                <View style={{flexDirection:'row'}}>
+                  <Text style={styles.worldListText}>{row}</Text>
+                  <Text style={styles.worldListText}>{code[row]}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )
+        }))
+      }
       </ScrollView>
-
-    </View>
-  
+    </View>  
   )
-
 }
-
-
 const styles = StyleSheet.create ( {
 
   allContainers: {
@@ -62,7 +112,7 @@ const styles = StyleSheet.create ( {
 
   changeContainers: {
     flex: 0.5,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: '#027965',
     alignItems: 'center',
     justifyContent: 'center',

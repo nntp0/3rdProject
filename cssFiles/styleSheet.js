@@ -9,7 +9,8 @@ export const getStyles = () =>{ return StyleSheet.create({
             justifyContent: 'space-around'
         },
         titlePanel: {
-            flex:1
+            flexDirection : 'row',
+            flex:3
         },
         cameraPanel: {
             flex: 5,
@@ -24,7 +25,7 @@ export const getStyles = () =>{ return StyleSheet.create({
         },
         infoPanel: {
             flex: 1, 
-            backgroundColor: 'blue'
+            backgroundColor: 'yellow'
         },
     
         camera: {
