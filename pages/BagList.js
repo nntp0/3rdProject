@@ -33,12 +33,21 @@ function BagList( {navigation} ) {
         <View style={styles.allContainers}>
 
             <View style={styles.priceTotalContainers}>
-              <Text style={styles.priceTotalText}>
-                {sum(itemList)}
-              </Text>
-              <Text style={styles.priceTotalText}>
-                {(sum(itemList)*currency).toFixed(2)}
-              </Text>
+
+              <Text style={styles.priceTitleText}>합계금액</Text>
+  
+              <View>
+                <View style={styles.priceTextContainers}>
+                  <Text style={styles.priceCurrency}>{global.fromCountry}     </Text>
+                  <Text style={styles.priceText}>{sum(itemList)}</Text>
+                </View>
+                
+                <View style={styles.priceTextContainers}> 
+                  <Text style={styles.priceCurrency}>{global.toCountry}    </Text>
+                  <Text style={styles.priceText}>{(sum(itemList)*currency).toFixed(2)}</Text>
+                </View>             
+              </View>
+           
             </View>            
 
             <ScrollView style={styles.priceListContainers}>
@@ -72,10 +81,14 @@ const styles = StyleSheet.create ( {
 
   priceTotalContainers: {
     flex: 0.5,
-    backgroundColor: '#027965',
+    backgroundColor: '#625296',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
+  },
+
+  priceTextContainers: {
+    flexDirection: 'row',
   },
 
   priceListContainers: {
@@ -88,14 +101,25 @@ const styles = StyleSheet.create ( {
     alignItems: 'center',
     marginHorizontal: 20,
     marginVertical: 5,
-    borderBottomColor: '#bfede5',
-    borderBottomWidth: 1,
+    borderBottomColor: '#625296',
+    borderBottomWidth: 0.5,
   }, 
 
-  priceTotalText: {
+  priceTitleText: {
+    marginBottom: 20,
     color: 'white',
-    fontSize: 30,
     fontWeight: 'bold',
+    fontSize: 20
+  },
+
+  priceCurrency: {
+    color: '#EFA8B0',
+    fontSize: 20,
+  },
+
+  priceText: {
+    color: 'white',
+    fontSize: 20,
   },
 
   priceListText: {

@@ -111,7 +111,7 @@ const styles = StyleSheet.create ( {
   changeContainers: {
     flex: 0.5,
     flexDirection: 'column',
-    backgroundColor: '#027965',
+    backgroundColor: '#625296',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
@@ -127,14 +127,13 @@ const styles = StyleSheet.create ( {
     alignItems: 'center',
     marginHorizontal: 20,
     marginVertical: 5,
-    borderBottomColor: '#bfede5',
-    borderBottomWidth: 1,
+    borderBottomColor: '#625296',
+    borderBottomWidth: 0.5,
   }, 
 
   changeText: {
     color: 'white',
     fontSize: 30,
-    padding: 10,
   },
 
   worldListText: {

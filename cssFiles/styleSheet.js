@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native'
 
+
+
 export const getStyles = () =>{ return StyleSheet.create({
         container: {
             flex: 1,
@@ -8,37 +10,54 @@ export const getStyles = () =>{ return StyleSheet.create({
             backgroundColor: 'white',
             justifyContent: 'space-around'
         },
+        
         titlePanel: {
+            flex: 1,
+            flexDirection: 'row',
+            backgroundColor: '#625296',
+            width: "100%",
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        titleButton:{
+            margin: 20,
+            padding: 5,
+            backgroundColor: '#3f365f',
+            borderRadius: 10,
+        },
+        titleButtonText: {
+            color: "white",
+            fontWeight: "bold",
+            fontSize: 20,
+        },
+        cameraText:{
+            margin: 10,
             flexDirection : 'row',
-            flex:3
+            flex: 0.5,
+            paddingBottom: 10,
         },
         cameraPanel: {
-            flex: 5,
-            width: "90%",
+            flex: 8,
+            width: "80%",
+            justifyContent: 'center',
         },
-        pricePanel: {
-            flex: 1,
-            width: 100,
-            backgroundColor: 'red',
-            
-            
+        buttonPanel: {
+            flex: 2,
+            width: "80%",
+            margin: 10,
+            paddingTop: 10,
+            flexDirection: 'row'
         },
         infoPanel: {
             flex: 1, 
-            backgroundColor: 'yellow'
+            margin: 10,  
+            backgroundColor: '#A89DC8',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 10,
         },
-    
         camera: {
             flex: 1,
         },
-        price: {
-            flex: 1,
-            justifyContent: 'center',
-            borderWidth: 3,
-            borderStyle: 'dashed',
-            alignItems: 'center',
-            width: 100,
-            backgroundColor: 'white'
-        }
     })
 }

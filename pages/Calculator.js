@@ -45,7 +45,7 @@ function Calculator({ navigation }) {
                 setInputPay(inputPay + value);
             }
         }else{
-            if (value === '<') {
+            if (value === 'del') {
                 console.log('< 눌렀음!!!!!!!')
                 setInputPay(inputPay.slice(0,-1))
             } else {
@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
 
     calContainers: {
         flex: 1,
-        backgroundColor: '#027965',
+        backgroundColor: '#625296',
         alignItems: 'center',
         justifyContent: 'center',
     },
 
     calTouch: {
-        margin: 10,
+        margin: 5,
         alignItems: 'center',
     },
 
@@ -122,13 +122,13 @@ const styles = StyleSheet.create({
     },
 
     calInfoText: {
-        color: '#ffec94',
+        color: '#EFA8B0',
+        fontSize: 20,
     },
 
     changeText: {
         color: 'white',
         fontSize: 30,
-        padding: 10,
       },    
 
 
