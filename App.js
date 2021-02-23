@@ -24,9 +24,9 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        activeColor="#ffec94"
+        activeColor="#EFA8B0"
         inactiveColor="#ffffff"
-        barStyle={{ backgroundColor: '#027965' }}
+        barStyle={{ backgroundColor: '#625296' }}
       >
         <Tab.Screen
           name="MainPage"
@@ -180,8 +180,9 @@ const MainPage = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titlePanel}>
-        <Text>Title</Text>
+        <Text style={styles.titleText}>Title</Text>
       </View>
+      <Text style={styles.cameraText}>카메라 화면에 가격표를 맞춰주세요</Text>
       <View style={styles.cameraPanel}>
         <RNCamera
           style={styles.camera}
@@ -211,22 +212,24 @@ const MainPage = ({ navigation, route }) => {
         >
         </RNCamera>
       </View>
-      <View style={styles.pricePanel}>
-        <TouchableOpacity activeOpacity={0.2} style={{flex:1,  color:"blue", alignItems: 'center',
-            justifyContent: 'center',}} onPress={
-          () => {
-            global.priceList.push({price:price})
-            console.log(global.priceList)
-            setTimer(2);
-            setPrice('');
-            setIsDetected(false);
-          }
-        }>
-          <Text style={{fontSize:30}}>{isDetected ? price : null}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.infoPanel}>
-        {country !== null && <Text>나라 : {country}</Text>}
+      <View style={styles.buttonPanel}>
+        <View style={styles.pricePanel}>
+          <TouchableOpacity activeOpacity={0.2} style={{flex:1,  color:"blue", alignItems: 'center',
+              justifyContent: 'center',}} onPress={
+            () => {
+              global.priceList.push({price:price})
+              console.log(global.priceList)
+              setTimer(2);
+              setPrice('');
+              setIsDetected(false);
+            }
+          }>
+            <Text style={{fontSize:20}}>{isDetected ? price : null}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.infoPanel}>
+          {country !== null && <Text>나라 : {country}</Text>}
+        </View>
       </View>
     </View>
   )

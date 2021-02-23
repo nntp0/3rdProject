@@ -63,7 +63,7 @@ const styles = StyleSheet.create ( {
   changeContainers: {
     flex: 0.5,
     flexDirection: 'row',
-    backgroundColor: '#027965',
+    backgroundColor: '#625296',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
@@ -86,7 +86,6 @@ const styles = StyleSheet.create ( {
   changeText: {
     color: 'white',
     fontSize: 30,
-    padding: 10,
   },
 
   worldListText: {

@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 0.5,
-        borderColor: '#91AA9D',
+        borderColor: '#625296',
         backgroundColor: 'white'
     },
 
     inputButtonText: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#027965'
+        color: '#625296',
     }
 });

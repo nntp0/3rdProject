@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native'
 
+
+
 export const getStyles = () =>{ return StyleSheet.create({
         container: {
             flex: 1,
@@ -9,22 +11,48 @@ export const getStyles = () =>{ return StyleSheet.create({
             justifyContent: 'space-around'
         },
         titlePanel: {
-            flex:1
+            flex:0.5,
+            backgroundColor: "#625296",
+            width: "100%",
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        titleText:{
+            color: "#EFA8B0",
+            fontWeight: "bold",
+            fontSize: 20
+        },
+        cameraText:{
+           margin: 20,
         },
         cameraPanel: {
             flex: 5,
-            width: "90%",
+            width: "60%",
+            
+            justifyContent: 'center',
         },
-        pricePanel: {
+        buttonPanel: {
             flex: 1,
             width: 100,
-            backgroundColor: 'red',
-            
-            
+            margin: 10,
+        },
+        pricePanel: {
+            flex: 0.5,
+            margin: 2,
+            backgroundColor: '#EFA8B0',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 10,
+            fontSize: 20,
         },
         infoPanel: {
-            flex: 1, 
-            backgroundColor: 'blue'
+            flex: 0.5,
+            margin: 2,  
+            backgroundColor: '#A89DC8',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 10,
+            fontFamily : 'NanumPenScript-Regular'
         },
     
         camera: {

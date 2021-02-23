@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
 
     calContainers: {
         flex: 1,
-        backgroundColor: '#027965',
+        backgroundColor: '#625296',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
 
     calInfoText: {
-        color: '#ffec94',
+        color: '#EFA8B0',
     },
 
     changeText: {

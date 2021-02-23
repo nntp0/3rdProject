@@ -64,7 +64,7 @@ const styles = StyleSheet.create ( {
 
   priceTotalContainers: {
     flex: 0.5,
-    backgroundColor: '#027965',
+    backgroundColor: '#625296',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
