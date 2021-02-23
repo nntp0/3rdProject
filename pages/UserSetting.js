@@ -12,8 +12,6 @@ function UserSetting( { navigation, route } ) {
   var {
     fromCountry,
     toCountry,
-    setFromCountry,
-    setToCountry,
     currencyFromToList,
   } = route.params
   const [isLeft, setIsLeft] = useState(true);
@@ -69,7 +67,7 @@ function UserSetting( { navigation, route } ) {
           return (
             <View style={styles.priceListContents} key={index}>
               <TouchableOpacity style={styles.worldListContents} onPress={() => {
-                setFromCountry(row)
+                //setFromCountry(row)
                 setTmpFromCountry(row)
                 global.fromCountry=row
                 console.log(row)
@@ -85,7 +83,7 @@ function UserSetting( { navigation, route } ) {
           return (
             <View style={styles.priceListContents} key={index}>
               <TouchableOpacity style={styles.worldListContents} onPress={() => {
-                setToCountry(row)
+                //setToCountry(row)
                 setTmpToCountry(row)
                 global.toCountry=row
                 console.log(row)
