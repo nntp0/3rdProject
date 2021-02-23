@@ -9,11 +9,17 @@ import { Alert } from 'react-native';
 
 // 사용자가 계산기를 사용할 페이지
 function Calculator({ navigation }) {
+    const [currency, setCurrency] = useState(global.currency);
+    const [toCountry, setToCountry] = useState(global.toCountry);
+    const [fromCountry, setFromCountry] = useState(global.fromCountry);
     // 여행지 돈 칸..?
     useEffect(()=>{
         const init = navigation.addListener('tabPress', e=> {
             console.log('Calculator section')
+            setCurrency(global.currency)
             setInputPay('')
+            setFromCountry(global.fromCountry)
+            setToCountry(global.toCountry)
             setdotCnt(0)
         }, [navigation])
 
@@ -24,7 +30,6 @@ function Calculator({ navigation }) {
     
     
     // 환율정보가 들어올 예정임!
-    const [currency, setCurrency] = useState(1000)
     const [dotCnt, setdotCnt] = useState(0)
     // 하단 숫자판 컴포넌트에 보낼 함수 (Calculator.js의 state값을 변경해주는 함수)
     
@@ -63,18 +68,26 @@ function Calculator({ navigation }) {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.calTouch}>
-                    <Text style={styles.calInfoText}>여행지</Text>
+                    <Text style={styles.calInfoText}>{fromCountry}</Text>
                 </TouchableOpacity>
                 <View>
-                     <Icon style={styles.changeText}>⇆</Icon>
+                    <TouchableOpacity style={styles.calTouch} onPress={() => {
+                        var temp = toCountry
+                        setToCountry(fromCountry)
+                        setFromCountry(temp)
+                        setCurrency(1/currency)
+                        }}>
+                        <Icon style={styles.changeText}>⇆</Icon>
+                    </TouchableOpacity>
+                     
                 </View>
                 <TouchableOpacity style={styles.calTouch}>
                     <Text style={styles.calMoneyText}>
-                        {inputPay * currency}
+                        {(inputPay * currency).toFixed(2)}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.calTouch}>
-                    <Text style={styles.calInfoText}>자국</Text>
+                    <Text style={styles.calInfoText}>{toCountry}</Text>
                 </TouchableOpacity>
             </View>
             {/* state 변경 함수 props로 보내기 */}

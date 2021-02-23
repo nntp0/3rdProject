@@ -24,6 +24,8 @@ export const getStyles = () =>{ return StyleSheet.create({
         },
         cameraText:{
            margin: 20,
+            flexDirection : 'row',
+            flex:3
         },
         cameraPanel: {
             flex: 5,
@@ -46,7 +48,7 @@ export const getStyles = () =>{ return StyleSheet.create({
             fontSize: 20,
         },
         infoPanel: {
-            flex: 0.5,
+            flex: 1, 
             margin: 2,  
             backgroundColor: '#A89DC8',
             alignItems: 'center',

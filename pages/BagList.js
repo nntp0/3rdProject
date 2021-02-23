@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView , View ,Text } from 'react-native';
 
 // 직접 만든 버튼 컴포넌트를 외부에서 가져오기
 import CustomButton from '../components/CustomButton';
-import { getStyles } from '../styleSheet';
+import { getStyles } from '../cssFiles/styleSheet';
 
 function sum(priceList) {
   var total = 0;
@@ -15,12 +15,14 @@ function sum(priceList) {
 
 function BagList( {navigation} ) {
     const [itemList, setItemList] = useState(global.priceList);
+    const [currency, setCurrency] = useState(global.currency);
     const [toggle, setToggle] = useState(true);
 
     useEffect(() => {
       const unsubscribe = navigation.addListener('tabPress', e => {
         console.log('BagList')
         setItemList(global.priceList)
+        setCurrency(global.currency)
         toggle ? setToggle(false) : setToggle(true)
       }, [navigation]);
   
@@ -34,6 +36,9 @@ function BagList( {navigation} ) {
               <Text style={styles.priceTotalText}>
                 {sum(itemList)}
               </Text>
+              <Text style={styles.priceTotalText}>
+                {(sum(itemList)*currency).toFixed(2)}
+              </Text>
             </View>            
 
             <ScrollView style={styles.priceListContainers}>
@@ -42,6 +47,9 @@ function BagList( {navigation} ) {
                   <View style={styles.priceListContents} key={index}>
                     <Text style={styles.priceListText}>
                         {row.price}
+                    </Text>
+                    <Text style={styles.priceListText}>
+                        {(row.price*currency).toFixed(2)}
                     </Text>
                     <CustomButton name='삭제' onPress={() => {                      
                       global.priceList = global.priceList.slice(0, index).concat(global.priceList.slice(index+1, global.priceList.length))
