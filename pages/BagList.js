@@ -15,12 +15,14 @@ function sum(priceList) {
 
 function BagList( {navigation} ) {
     const [itemList, setItemList] = useState(global.priceList);
+    const [currency, setCurrency] = useState(global.currency);
     const [toggle, setToggle] = useState(true);
 
     useEffect(() => {
       const unsubscribe = navigation.addListener('tabPress', e => {
         console.log('BagList')
         setItemList(global.priceList)
+        setCurrency(global.currency)
         toggle ? setToggle(false) : setToggle(true)
       }, [navigation]);
   
@@ -34,6 +36,9 @@ function BagList( {navigation} ) {
               <Text style={styles.priceTotalText}>
                 {sum(itemList)}
               </Text>
+              <Text style={styles.priceTotalText}>
+                {(sum(itemList)*currency).toFixed(2)}
+              </Text>
             </View>            
 
             <ScrollView style={styles.priceListContainers}>
@@ -42,6 +47,9 @@ function BagList( {navigation} ) {
                   <View style={styles.priceListContents} key={index}>
                     <Text style={styles.priceListText}>
                         {row.price}
+                    </Text>
+                    <Text style={styles.priceListText}>
+                        {(row.price*currency).toFixed(2)}
                     </Text>
                     <CustomButton name='삭제' onPress={() => {                      
                       global.priceList = global.priceList.slice(0, index).concat(global.priceList.slice(index+1, global.priceList.length))
