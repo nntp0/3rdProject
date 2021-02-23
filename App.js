@@ -22,10 +22,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 global.priceList = []
-global.switch = false
 global.fromCountry = ''
 global.toCountry = ''
 global.currency = 0
+global.currencyList = ''
+global.currencyFromToList = ''
 
 const MyStack = () => {
   return (
@@ -65,10 +66,8 @@ const MainPage = ({ navigation, route }) => {
   const [timer, setTimer] = useState(0);                //인식되고 딜레이 설정
   const cameraRef = useRef();
 
-  const [recentCurrencyList, setRecentCurrencyList] = useState(null);
-  const [currencyFromToList, setCurrencyFromToList] = useState(null);
   const [fromCountry, setFromCountry] = useState('');
-  const [toCountry, setToCountry] = useState('USD');
+  const [toCountry, setToCountry] = useState('');
   const [currency, setCurrency] = useState(global.currency);
 
   // 초기 설정을 진행합니다.
@@ -90,7 +89,10 @@ const MainPage = ({ navigation, route }) => {
         getRecentCurrencyList().then((res) => {
           getGeoLocation().then((resGeo) => { // 위도/경도 받아오기
             console.log('1.2 Success')
-            getCurrentCountry({res:res, resGeo:resGeo}) // 현재 위도/경도 의 나라 가져오기
+            getCurrentCountry({
+              currencyList:res.currencyList,
+              fromToList:res.fromToList, 
+              resGeo:resGeo}) // 현재 위도/경도 의 나라 가져오기
           })
         })
       } else {
@@ -102,10 +104,20 @@ const MainPage = ({ navigation, route }) => {
 
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('MainPage')
-      if (recentCurrencyList && global.fromCountry && global.toCountry) 
-        global.currency = (recentCurrencyList[global.fromCountry + '/' + global.toCountry])
+      
+      if (global.currencyList && global.fromCountry && global.toCountry) {
+        if (global.fromCountry == global.toCountry){
+          global.currency = 1
+        }
+        else {
+          global.currency = (global.currencyList[global.fromCountry + '/' + global.toCountry])
+        }
+        setFromCountry(global.fromCountry)
+        setToCountry(global.toCountry)
         setCurrency(global.currency)
+      }
     });
+
     return unsubscribe;
 
   }, [navigation])
@@ -133,15 +145,14 @@ const MainPage = ({ navigation, route }) => {
     return new Promise((resolve, reject) => {
       const url = 'http://59.28.30.218:3000/recent'
 
-      axios.get(url).then((resRecent) => {
+      axios.get(url).then((res) => {
+        storeCurrencyList(res.data)
         console.log('1.1 Success')
-
-        storeCurrencyList(resRecent.data)
-        setRecentCurrencyList(resRecent.data)
+        global.currencyList = res.data
 
         var fromToList = {}
         var fromList = new Set()
-        Object.keys(resRecent.data).forEach(element => {
+        Object.keys(res.data).forEach(element => {
           element = element.split('/')
           if (fromList.has(element[0]))
           {
@@ -152,33 +163,33 @@ const MainPage = ({ navigation, route }) => {
             fromToList[element[0]] = [element[1]]
           }
         });
-        setCurrencyFromToList(fromToList)
+        global.currencyFromToList = fromToList
 
-        resolve({recentCurrencyList:resRecent.data, fromToList:fromToList})
+        resolve({currencyList:res.data, fromToList:fromToList})
       })
     })
   } // 현재 CurrencyList를 얻어옵니다.
 
   const getCurrentCountry = (res) => {
-    var resCurrencyList = res.res.recentCurrencyList
-    var fromToList = res.res.fromToList
+    var resCurrencyList = res.currencyList
+    var fromToList = res.fromToList
     var resGeo = res.resGeo
 
-    console.log(resCurrencyList)
-    console.log(fromToList)
-    console.log(resGeo)
     const geUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + resGeo.lat + '&lon=' + resGeo.lon + '&zoom=18&addressdetail=1';
     axios.get(geUrl).then((resCountry) => {
       console.log('1.2.1 Success')
       resCountry = code[resCountry.data.address.country_code] //반환된 모든 정보에서 나라 정보만 추출
       storeCountry(resCountry)
-      global.currency=resCurrencyList[resCountry + '/USD']
-      console.log(global.currency)
+      if (resCountry == 'USD') global.currency = 1
+      else global.currency=resCurrencyList[resCountry + '/USD']
+      
       global.fromCountry = resCountry
       global.toCountry = 'USD'
-      console.log(resCountry)
       setFromCountry(resCountry)
-      setCurrency(resCurrencyList[resCountry + '/USD'])
+      setToCountry('USD')
+
+      if (resCountry == 'USD') setCurrency(1)
+      else setCurrency(resCurrencyList[resCountry + '/USD'])
     })
   } // 현재 Country 정보를 얻어옵니다.
   const storeCurrencyList = async (value) => {
@@ -207,7 +218,7 @@ const MainPage = ({ navigation, route }) => {
     //AsyncStorage에서 정보를 불러옵니다.
     //CurrencyList, Country
     getCurrenyList().then((resCurrency) => {
-      setRecentCurrencyList(resCurrency)
+      global.currencyList = resCurrency
 
       var fromToList = {}
       var fromList = new Set()
@@ -223,13 +234,19 @@ const MainPage = ({ navigation, route }) => {
           fromToList[element[0]] = [element[1]]
         }
       });
-      setCurrencyFromToList(fromToList)
+      global.currencyFromToList = fromToList
+
       getCountry().then((resCountry) => {
-        global.currency=resCurrency[resCountry + '/USD']
+        if (resCountry == 'USD') global.currency = 1
+        else global.currency=resCurrencyList[resCountry + '/USD']
+
         global.fromCountry = resCountry
         global.toCountry = 'USD'
         setFromCountry(resCountry)
-        setCurrency(resCurrency[resCountry + '/USD'])
+        setToCountry('USD')
+
+        if (resCountry == 'USD') setCurrency(1)
+        else setCurrency(resCurrencyList[resCountry + '/USD'])
       })
     })
   } // Async 스토리지에 CurrencyList, Country를 불러와 State(recentCurrencyList, country)에 저장합니다.
@@ -266,10 +283,8 @@ const MainPage = ({ navigation, route }) => {
           onPress={() => {
               navigation.navigate('CurrencySettings', {
                 "fromCountry":fromCountry,
-                "setFromCountry":setFromCountry,
                 "toCountry":toCountry,
-                "setToCountry":setToCountry,
-                "currencyFromToList":currencyFromToList,
+                "currencyFromToList":global.currencyFromToList
               })
           }
         }>
