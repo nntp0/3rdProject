@@ -38,6 +38,7 @@ export const getStyles = () =>{ return StyleSheet.create({
             paddingBottom: 10,
         },
         cameraPanel: {
+            margin: 30,
             flex: 8,
             width: "80%",
             justifyContent: 'center',
