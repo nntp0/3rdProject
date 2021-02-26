@@ -41,7 +41,7 @@ function UserSetting( { navigation, route } ) {
               {tmpFromCountry}
             </Text>
           </TouchableOpacity>
-          <Icon style={styles.changeText}>⇆</Icon>
+          <Text style={styles.changeText}>➔</Text>
           <TouchableOpacity style={styles.worldListContents} onPress={() => {
             setIsLeft(false)
             console.log('Right')
@@ -53,14 +53,7 @@ function UserSetting( { navigation, route } ) {
         </View>
       </View>
 
-      <View style={styles.searchContainer}>
-       <TextInput 
-       style={styles.searchInput}
-       placeholder='검색어를 입력하세요'
-       >  
-       </TextInput>
-       <CustomButton name='검색'></CustomButton>
-      </View>
+      
 
       <ScrollView style={styles.worldListContainers}>
         { isLeft ? (fromCountryList.length==0 ? null : fromCountryList.map((row, index) => {
@@ -134,13 +127,14 @@ const styles = StyleSheet.create ( {
   changeText: {
     color: 'white',
     fontSize: 30,
+    textAlign: 'center',
   },
 
   worldListText: {
-    flex: 4,
-    padding: 5,
+    flex: 2,
+    padding: 3,
     color: 'gray',
-    fontSize: 20,
+    fontSize: 17,
   },
 
   searchContainer: {

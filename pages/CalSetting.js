@@ -22,15 +22,6 @@ function CalSetting( { navigation } ) {
         
       </View>
 
-      <View style={styles.searchContainer}>
-       <TextInput 
-       style={styles.searchInput}
-       placeholder='검색어를 입력하세요'
-       >  
-       </TextInput>
-       <CustomButton name='검색'></CustomButton>
-      </View>
-
       <ScrollView style={styles.worldListContainers}>
         
         <TouchableOpacity style={styles.worldListContents}>
@@ -48,8 +39,10 @@ function CalSetting( { navigation } ) {
 
 }
 
+import { getStyles } from '../cssFiles/styleSheet'
+const styles = getStyles()
 
-const styles = StyleSheet.create ( {
+/*const styles = StyleSheet.create ( {
 
   allContainers: {
     flex: 1,
@@ -102,6 +95,6 @@ const styles = StyleSheet.create ( {
     borderWidth: 1,
   },
 
-} );
+} );*/
 
 export default CalSetting;

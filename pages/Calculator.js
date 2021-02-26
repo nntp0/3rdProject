@@ -1,7 +1,6 @@
 import { PROPERTY_TYPES } from '@babel/types';
 import React, { useEffect, useState } from 'react';
-import { TextInput } from 'react-native';
-import { SafeAreaView, StyleSheet, FlatList, ScrollView, View, Text, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import ReactCalculator from '../components/ReactCalculator';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -135,3 +134,4 @@ const styles = StyleSheet.create({
 });
 
 export default Calculator;
+
