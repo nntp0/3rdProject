@@ -23,7 +23,7 @@ export const getStyles = () =>{ return StyleSheet.create({
             margin: 20,
             padding: 5,
             backgroundColor: '#3f365f',
-            borderRadius: 10,
+            borderRadius: 8,
         },
         titleButtonText: {
             color: "white",
@@ -31,15 +31,20 @@ export const getStyles = () =>{ return StyleSheet.create({
             fontSize: 20,
         },
         cameraText:{
-            margin: 10,
-            flexDirection : 'row',
+            margin: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
             flex: 0.5,
             paddingBottom: 10,
         },
         cameraPanel: {
+            margin: 30,
             flex: 8,
             width: "80%",
             justifyContent: 'center',
+        },
+        camera: {
+            flex: 1,
         },
         buttonPanel: {
             flex: 2,
@@ -50,14 +55,67 @@ export const getStyles = () =>{ return StyleSheet.create({
         },
         infoPanel: {
             flex: 1, 
-            margin: 10,  
-            backgroundColor: '#A89DC8',
+            margin: 10,
+            backgroundColor: '#A89DC8',  
+            //backgroundColor: '#3f365f',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 10,
         },
-        camera: {
-            flex: 1,
+        priceText: {
+            color: 'white',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            fontSize: 20,
+            paddingTop: 3,
         },
+
+        // UserSetting
+        changeContainers: {
+            flex: 0.5,
+            flexDirection: 'column',
+            backgroundColor: '#625296',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 10,
+          },
+        
+          worldListContainers: {
+            flex: 3,
+            backgroundColor: 'white',
+          },
+          
+          worldListContents:{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: 20,
+            marginVertical: 5,
+            borderBottomColor: '#625296',
+            borderBottomWidth: 0.5,
+          }, 
+        
+          changeText: {
+            color: 'white',
+            fontSize: 30,
+          },
+        
+          worldListText: {
+            flex: 2,
+            padding: 3,
+            color: 'gray',
+            fontSize: 17,
+          },
+        
+          searchContainer: {
+            padding: 10,
+            flexDirection: 'row',
+          }, 
+        
+          searchInput: {
+            flex: 4,
+            borderWidth: 1,
+          },
+        
+    
     })
 }

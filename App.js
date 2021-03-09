@@ -12,6 +12,10 @@ import NetInfo from "@react-native-community/netinfo";
 import { getGeoLocation } from './getGeoLocation'
 import { code } from './currencySign';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/Ionicons';
+
+
+
 // page별 코드 정보를 외부에서 가져오기
 import BagList from './pages/BagList';
 import UserSetting from './pages/UserSetting';
@@ -52,10 +56,17 @@ function Home(){
         <Tab.Screen
           name="MainPage"
           component={MainPage}
-          options={{ title: 'Shopping' }}
-        />
-        <Tab.Screen name="BagList" component={BagList} />
-        <Tab.Screen name="Calculator" component={Calculator}/>
+          options={{ title: 'Shopping',
+              tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="camera-outline" color={color} size={23} />)}}/>
+        <Tab.Screen name="BagList" component={BagList} 
+          options={{ 
+              tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="cart-outline" color={color} size={23} />)}}/>
+        <Tab.Screen name="Calculator" component={Calculator}
+          options={{ 
+              tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="apps-outline" color={color} size={23} />)}}/>
       </Tab.Navigator>
   );
 };
@@ -189,6 +200,7 @@ const MainPage = ({ navigation, route }) => {
       global.toCountry = 'USD'
       setFromCountry(resCountry)
       setToCountry('USD')
+      console.log(resCountry)
 
       if (resCountry == 'USD') setCurrency(1)
       else setCurrency(resCurrencyList[resCountry + '/USD'])
@@ -294,7 +306,10 @@ const MainPage = ({ navigation, route }) => {
         </TouchableOpacity>
 
       </View>
-      <Text style={styles.cameraText}>카메라 화면에 가격표를 맞춰주세요</Text>
+      <View style={styles.cameraText}>
+        <Text >카메라 화면에 가격표를 맞춰주세요</Text>
+        <Text >Point camera at a price tag</Text>
+      </View>
       <View style={styles.cameraPanel}>
         <RNCamera
           style={styles.camera}
@@ -326,6 +341,7 @@ const MainPage = ({ navigation, route }) => {
       </View>
 
       <View style={styles.buttonPanel}>
+
         <View style={styles.infoPanel}>
           <TouchableOpacity activeOpacity={0.2} onPress={
             () => {
@@ -338,13 +354,26 @@ const MainPage = ({ navigation, route }) => {
               }
             }
           }>
-            <Text>변환 전 : {isDetected ? price : 0}</Text>
-            
-            
+            <Text style={{color:'white', fontSize: 15}}>{fromCountry}</Text>
+            <Text style={styles.priceText}>{isDetected ? price : null }</Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.infoPanel}>
-          <Text>변환 후 : {isDetected ? (price*currency).toFixed(2) : 0}</Text>
+          <TouchableOpacity activeOpacity={0.2} onPress={
+              () => {
+                if (price!='') {
+                global.priceList.push({price:price})
+                console.log(global.priceList)
+                setTimer(2);
+                setPrice('');
+                setIsDetected(false);
+                }
+              }
+            }>
+            <Text style={{color:'white', fontSize: 15}}>{toCountry}</Text>
+            <Text style={styles.priceText}>{isDetected ? (price*currency).toFixed(2) : null }</Text>
+          </TouchableOpacity>          
         </View>
       </View>
 
@@ -353,4 +382,5 @@ const MainPage = ({ navigation, route }) => {
 }
 
 import { getStyles } from './cssFiles/styleSheet'
+import { ViewWindows } from 'react-native-windows';
 const styles = getStyles()

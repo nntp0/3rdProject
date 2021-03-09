@@ -34,11 +34,11 @@ function BagList( {navigation} ) {
 
             <View style={styles.priceTotalContainers}>
 
-              <Text style={styles.priceTitleText}>합계금액</Text>
+              <Text style={styles.priceTitleText}>TOTAL</Text>
   
               <View>
                 <View style={styles.priceTextContainers}>
-                  <Text style={styles.priceCurrency}>{global.fromCountry}     </Text>
+                  <Text style={styles.priceCurrency}>{global.fromCountry}    </Text>
                   <Text style={styles.priceText}>{sum(itemList)}</Text>
                 </View>
                 
@@ -60,7 +60,7 @@ function BagList( {navigation} ) {
                     <Text style={styles.priceListText}>
                         {(row.price*currency).toFixed(2)}
                     </Text>
-                    <CustomButton name='삭제' onPress={() => {                      
+                    <CustomButton name='Remove' onPress={() => {                      
                       global.priceList = global.priceList.slice(0, index).concat(global.priceList.slice(index+1, global.priceList.length))
                       setItemList(global.priceList)
                     }}></CustomButton>
